@@ -759,7 +759,11 @@ sub map_and_send_key {
     }
     usleep(2_000);
     if (!defined $down_flag || $down_flag == 0) {
-        for my $key (@events) {
+        # reverse the events so we do 'modifier down', 'modified
+        # key down', 'modified key up', 'modifier up' - this is how
+        # humans tend to type and seems to avoid some bugs, note after
+        # this @events itself *is now reversed*
+        for my $key (reverse @events) {
             $self->send_key_event_up($key);
         }
     }
